@@ -19,6 +19,7 @@
 :root{
   --bg:#FFFFFF; --surface:#EEF2EA; --line:#E1E7DC; --fg:#1B2620; --muted:#4F5D52; --accent:#2F5A2B; --accent-fg:#FFFFFF;
   --free-bg:#DCEBD8; --free-fg:#1F4D24;
+  --mod-bg:#E9F0CF; --mod-fg:#3F4A0E;
   --spar-bg:#FBEFD6; --spar-fg:#6E4700;
   --avoid-bg:#FBE1D3; --avoid-fg:#8A2F0A;
   --toxic-bg:#7A1414; --toxic-fg:#FFFFFF;
@@ -29,12 +30,12 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#141A16; --surface:#1F2822; --line:#2C362F; --fg:#E7EDE6; --muted:#A9B5AB; --accent:#9CCB8F; --accent-fg:#102012;
-  --free-bg:#24402A; --free-fg:#BFE3B6; --spar-bg:#463513; --spar-fg:#F3D693; --avoid-bg:#4D2516; --avoid-fg:#F6C0A6;
+  --free-bg:#24402A; --free-fg:#BFE3B6; --mod-bg:#353D17; --mod-fg:#DDE8A6; --spar-bg:#463513; --spar-fg:#F3D693; --avoid-bg:#4D2516; --avoid-fg:#F6C0A6;
   --toxic-bg:#B42323; --toxic-fg:#FFFFFF; --nyr-line:#8A978C; --nyr-fg:#C9D3CA;
   --warn-bg:#2E2614; --warn-line:#6B5627; --warn-fg:#F1DFB4; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#141A16; --surface:#1F2822; --line:#2C362F; --fg:#E7EDE6; --muted:#A9B5AB; --accent:#9CCB8F; --accent-fg:#102012;
-  --free-bg:#24402A; --free-fg:#BFE3B6; --spar-bg:#463513; --spar-fg:#F3D693; --avoid-bg:#4D2516; --avoid-fg:#F6C0A6;
+  --free-bg:#24402A; --free-fg:#BFE3B6; --mod-bg:#353D17; --mod-fg:#DDE8A6; --spar-bg:#463513; --spar-fg:#F3D693; --avoid-bg:#4D2516; --avoid-fg:#F6C0A6;
   --toxic-bg:#B42323; --toxic-fg:#FFFFFF; --nyr-line:#8A978C; --nyr-fg:#C9D3CA;
   --warn-bg:#2E2614; --warn-line:#6B5627; --warn-fg:#F1DFB4; color-scheme:dark}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.45}
@@ -60,6 +61,7 @@ ul.list li{border-bottom:1px solid var(--line)}
 .row .s{font-size:13px;color:var(--muted)}
 .pill{flex-shrink:0;padding:4px 10px;border-radius:10px;font-size:13px;font-weight:600;white-space:nowrap}
 .r-free{background:var(--free-bg);color:var(--free-fg)}
+.r-mod{background:var(--mod-bg);color:var(--mod-fg)}
 .r-spar{background:var(--spar-bg);color:var(--spar-fg)}
 .r-avoid{background:var(--avoid-bg);color:var(--avoid-fg)}
 .r-toxic{background:var(--toxic-bg);color:var(--toxic-fg)}
@@ -149,9 +151,10 @@ const SRC={
  asun:["ASPCA: sunflower","https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/sunflower"],
  adaisy:["ASPCA: daisy (chrysanthemum)","https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/daisy"]
 };
-const RATE={free:"Feed freely",spar:"Feed sparingly",avoid:"Avoid",toxic:"Toxic",nyr:"Not yet rated"};
+const RATE={free:"Feed freely",mod:"Feed in moderation",spar:"Feed sparingly",avoid:"Avoid",toxic:"Toxic",nyr:"Not yet rated"};
 const BLURB={
- free:"Fine as a regular part of a varied mix.",
+ free:"Can be a regular, everyday part of a varied mix.",
+ mod:"Good food, but not every day. Offer it a few times a week, mixed with other plants.",
  spar:"Safe in small amounts, mixed with other plants. Don't make it a staple.",
  avoid:"Don't offer it. Remove it from the enclosure if it grows there.",
  toxic:"Poisonous. Keep it out of reach. If your tortoise ate some, call a reptile vet.",
@@ -161,7 +164,7 @@ const CAT={weed:"Weeds & lawn",garden:"Garden & landscape",house:"Houseplants",g
 // [name, scientific, cat, where in CA, rating, parts/note, sources, extra note]
 const P=[
 // [name, scientific, cat, where in CA, rating, parts/note, sources, extra note]
-["Dandelion", "Taraxacum officinale", "weed", "Statewide", "free", "Leaves and flowers", ["rvc", "trust", "club", "group"], "Young tortoises: sources disagree. One club warns against large amounts for very young tortoises; another calls it important for hatchlings. Keep it in a mix. The Tortoise Table rates it feed in moderation."],
+["Dandelion", "Taraxacum officinale", "weed", "Statewide", "mod", "Leaves and flowers", ["rvc", "trust", "club", "group"], "Young tortoises: sources disagree. One club warns against large amounts for very young tortoises; another calls it important for hatchlings. The Tortoise Table rates it feed in moderation."],
 ["Cat's ear", "Hypochaeris radicata", "weed", "Statewide; very common in NorCal lawns", "free", "Leaves, flowers and roots", ["trustlist", "club", "clubweb", "ttwild"], "Often mistaken for dandelion. Cat's ear has solid stems; dandelion's are hollow."],
 ["Smooth hawksbeard", "Crepis capillaris", "weed", "NorCal", "free", "Leaves and flowers", ["trustlist", "club", "rtort", "ttwild"], ""],
 ["Broadleaf plantain", "Plantago major", "weed", "Statewide", "free", "Leaves", ["rvc", "club", "ttwild"], ""],
@@ -170,15 +173,15 @@ const P=[
 ["Common sow thistle", "Sonchus oleraceus", "weed", "Statewide", "free", "Leaves and flowers", ["rvc", "trust", "club", "ttwild"], ""],
 ["Prickly lettuce", "Lactuca serriola", "weed", "Statewide", "avoid", "", ["ttwild"], "The Tortoise Table says don't feed it."],
 ["Redstem filaree", "Erodium cicutarium", "weed", "Statewide", "spar", "Leaves, flowers and seed heads", ["group", "usgs", "ttwild"], "Wild desert tortoises eat it, but the Tortoise Table says feed sparingly."],
-["White clover", "Trifolium repens", "weed", "Statewide", "spar", "Leaves and flowers", ["trust", "clubweb", "kaplan", "ttwild"], "High in protein. Occasional only for young tortoises."],
+["White clover", "Trifolium repens", "weed", "Statewide", "mod", "Leaves and flowers", ["trust", "clubweb", "kaplan", "ttwild"], "Legume: higher protein. Occasional only for young tortoises."],
 ["Bur clover", "Medicago polymorpha", "weed", "Statewide", "spar", "Leaves and flowers", ["ttwild"], "Legume: higher protein. Only one source so far."],
-["Chickweed", "Stellaria media", "weed", "NorCal", "free", "Whole plant", ["rvc", "club", "ttwild"], "The Tortoise Table rates it feed in moderation."],
+["Chickweed", "Stellaria media", "weed", "NorCal", "mod", "Whole plant", ["rvc", "club", "ttwild"], ""],
 ["Field bindweed", "Convolvulus arvensis", "weed", "Statewide", "spar", "Leaves and flowers", ["rvc", "club", "mouse", "ttwild"], "Keeper groups list it, but a lab study found liver damage in mice fed only bindweed. Occasional only."],
-["Common chicory", "Cichorium intybus", "weed", "NorCal", "spar", "Leaves and flowers", ["clubweb", "club", "rtort", "ttwild"], "Same species as radicchio. One club rates it a moderate feed."],
+["Common chicory", "Cichorium intybus", "weed", "NorCal", "mod", "Leaves and flowers", ["clubweb", "club", "rtort", "ttwild"], "Same species as radicchio."],
 ["Wild radish", "Raphanus sativus", "weed", "Statewide; coastal", "spar", "Leaves", ["rtort"], "Mustard family: rotate, never a staple. Only one source so far."],
 ["Black mustard", "Brassica nigra", "weed", "Roadsides and hills", "spar", "Leaves and flowers", ["club"], "Mustard family: rotate, never a staple. Only one source so far."],
-["Shepherd's purse", "Capsella bursa-pastoris", "weed", "Statewide", "spar", "Leaves", ["club", "rtort", "ttwild"], ""],
-["Hairy bittercress", "Cardamine hirsuta", "weed", "NorCal", "spar", "Leaves", ["club", "ttwild"], ""],
+["Shepherd's purse", "Capsella bursa-pastoris", "weed", "Statewide", "mod", "Leaves", ["club", "rtort", "ttwild"], ""],
+["Hairy bittercress", "Cardamine hirsuta", "weed", "NorCal", "mod", "Leaves", ["club", "ttwild"], ""],
 ["Common purslane", "Portulaca oleracea", "weed", "Statewide; summer", "avoid", "", ["rtort", "ttwild"], "Sources disagree: one lists it as food, but the Tortoise Table says don't feed it. It's also high in oxalates, so we take the cautious side."],
 ["Miner's lettuce", "Claytonia perfoliata", "weed", "NorCal; shady spots", "spar", "Leaves and flowers", ["ttwild"], "Only one source so far."],
 ["Bermuda buttercup (sourgrass)", "Oxalis pes-caprae", "weed", "Coastal NorCal and SoCal", "avoid", "", ["ivis", "massey"], "High in soluble oxalates, which bind calcium."],
@@ -188,7 +191,7 @@ const P=[
 ["Hibiscus", "Hibiscus rosa-sinensis", "garden", "SoCal; mild NorCal", "free", "Leaves and flowers", ["rvc24", "club", "group"], ""],
 ["Rose", "Rosa spp.", "garden", "Statewide", "free", "Petals and leaves", ["trust", "club", "kaplan"], "Only from plants never sprayed."],
 ["Pansy / viola", "Viola spp.", "garden", "Statewide", "free", "Flowers and leaves, not seeds", ["club", "group"], "The seeds are mildly toxic."],
-["Nasturtium", "Tropaeolum majus", "garden", "Coastal", "spar", "Leaves and flowers", ["rvc24", "kaplan", "ttgarden"], "Peppery mustard oils."],
+["Nasturtium", "Tropaeolum majus", "garden", "Coastal", "mod", "Leaves and flowers", ["rvc24", "kaplan", "ttgarden"], "Peppery mustard oils."],
 ["Prickly pear pads", "Opuntia ficus-indica", "garden", "SoCal", "free", "Young pads and flowers", ["club", "group", "kaplan"], "Remove every spine and the tiny hair-like glochids."],
 ["Mulberry leaves", "Morus alba", "garden", "Statewide", "free", "Young leaves", ["club", "group"], ""],
 ["Grape leaves", "Vitis vinifera", "garden", "Statewide", "free", "Young leaves, no fruit", ["rvc", "club", "group"], ""],
@@ -204,7 +207,7 @@ const P=[
 ["English ivy", "Hedera helix", "garden", "NorCal", "toxic", "", ["ucanr", "aivy", "groupbad"], ""],
 ["Daffodil", "Narcissus spp.", "garden", "Statewide", "toxic", "", ["ucanr", "ucmarin", "groupbad", "ttgarden"], ""],
 ["Pothos", "Epipremnum aureum", "house", "Indoors", "toxic", "", ["ucanr", "apothos", "groupbad"], "Needle-like oxalate crystals."],
-["Endive / escarole", "Cichorium endivia", "grocery", "Any grocery store", "spar", "Leaves", ["ness", "kaplan"], "The best store-bought green, but weeds are better."],
+["Endive / escarole", "Cichorium endivia", "grocery", "Any grocery store", "mod", "Leaves", ["ness", "kaplan"], "The best store-bought green, but weeds are better."],
 ["Romaine lettuce", "Lactuca sativa", "grocery", "Any grocery store", "spar", "Leaves", ["rvc", "trust"], "Low nutrition. Filler only."],
 ["Spring mix", "Mixed greens", "grocery", "Any grocery store", "spar", "Leaves", ["club", "rvc"], "Check the label: skip mixes with spinach, kale or cabbage."],
 ["Collard greens", "Brassica oleracea", "grocery", "Any grocery store", "spar", "Leaves", ["kaplan", "groupfood"], "Can affect the thyroid. Rotate, never a staple."],
@@ -213,9 +216,9 @@ const P=[
 ["Fruit (strawberries, apples, etc.)", "Various", "grocery", "Any grocery store", "avoid", "", ["trust", "club"], "Too much sugar for Mediterranean tortoises."],
 ["Turnip greens", "Brassica rapa", "grocery", "Any grocery store", "spar", "Leaves", ["kaplan", "furry"], "Mustard family: can affect the thyroid. Rotate, never a staple."],
 ["Mustard greens", "Brassica juncea", "grocery", "Any grocery store", "spar", "Leaves", ["kaplan", "furry"], "Mustard family: can affect the thyroid. Rotate, never a staple."],
-["Watercress", "Nasturtium officinale", "grocery", "Any grocery store", "spar", "Leaves and stems", ["rvc", "kaplan", "club"], "A vet school lists it as a main food, but it's in the mustard family, so rotate it."],
-["Arugula (rocket)", "Eruca vesicaria", "grocery", "Any grocery store", "spar", "Leaves", ["rvc", "club"], "Mustard family: rotate."],
-["Radicchio", "Cichorium intybus", "grocery", "Any grocery store", "spar", "Leaves", ["furry", "rtort", "clubweb"], "Same species as wild chicory."],
+["Watercress", "Nasturtium officinale", "grocery", "Any grocery store", "mod", "Leaves and stems", ["rvc", "kaplan", "club"], "Mustard family: rotate."],
+["Arugula (rocket)", "Eruca vesicaria", "grocery", "Any grocery store", "mod", "Leaves", ["rvc", "club"], "Mustard family: rotate."],
+["Radicchio", "Cichorium intybus", "grocery", "Any grocery store", "mod", "Leaves", ["furry", "rtort", "clubweb"], "Same species as wild chicory."],
 ["Parsley", "Petroselinum crispum", "grocery", "Any grocery store", "spar", "Leaves", ["rvc", "kaplan"], "Contains oxalates."],
 ["Cilantro", "Coriandrum sativum", "grocery", "Any grocery store", "spar", "Leaves", ["rvc"], "Only one source so far."],
 ["Lamb's lettuce (mâche)", "Valerianella locusta", "grocery", "Any grocery store", "free", "Leaves", ["club", "ttwild"], "Also called corn salad."],
@@ -238,7 +241,7 @@ const P=[
 ["Timothy hay", "Phleum pratense", "weed", "Pet stores", "free", "Hay", ["rvc", "group"], "Good fiber, especially when fresh weeds are scarce."],
 ["Groundsel", "Senecio vulgaris", "weed", "Statewide", "toxic", "", ["aground", "inchem", "ttwild"], "Contains liver toxins that can build up over time. One UK vet school lists it as food; we rate it toxic."],
 ["Prickly sow thistle", "Sonchus asper", "weed", "Statewide", "free", "Leaves and flowers", ["trustlist", "club", "ttwild"], ""],
-["Milk thistle", "Silybum marianum", "weed", "Statewide", "spar", "Leaves, spines removed", ["rvc", "ttwild"], "Remove the spines first."],
+["Milk thistle", "Silybum marianum", "weed", "Statewide", "mod", "Leaves, spines removed", ["rvc", "ttwild"], "Remove the spines first."],
 ["Vetch", "Vicia spp.", "weed", "Statewide", "spar", "Leaves and flowers", ["trustlist", "club", "ttwild"], "Legume: higher protein."],
 ["Henbit and dead nettle", "Lamium spp.", "weed", "NorCal", "free", "Leaves and flowers", ["trustlist", "club", "ttwild"], "Dead nettle is a staple; the Tortoise Table says feed henbit sparingly."],
 ["Cleavers (goosegrass)", "Galium aparine", "weed", "NorCal", "spar", "Leaves", ["club", "ttwild"], ""],
@@ -254,7 +257,7 @@ const P=[
 ["Honeysuckle", "Lonicera spp.", "garden", "Statewide", "free", "Leaves and flowers", ["rvc", "trustlist", "club"], "Tortoise Trust notes Hermann's tortoises prefer it."],
 ["Hollyhock", "Alcea rosea", "garden", "Statewide", "free", "Leaves and flowers", ["clubweb", "group", "ttgarden"], ""],
 ["Petunia", "Petunia hybrida", "garden", "Statewide", "spar", "Flowers", ["kaplan", "group"], "A treat, not a staple."],
-["Gazania", "Gazania spp.", "garden", "Statewide", "spar", "Flowers", ["group", "ttgarden"], ""],
+["Gazania", "Gazania spp.", "garden", "Statewide", "mod", "Flowers", ["group", "ttgarden"], ""],
 ["Fuchsia", "Fuchsia spp.", "garden", "Coastal", "spar", "Flowers and leaves", ["club"], "Only one source so far."],
 ["Periwinkle (vinca)", "Vinca spp.", "garden", "Statewide", "toxic", "", ["ucanr", "uceld", "groupbad"], ""],
 ["Hydrangea", "Hydrangea spp.", "garden", "Statewide", "toxic", "", ["ucanr", "groupbad", "ttgarden"], ""],
@@ -284,14 +287,14 @@ const P=[
 ["Chrysanthemum (mums)", "Chrysanthemum spp.", "garden", "Statewide", "avoid", "", ["ucanr", "adaisy"], "Contains irritants and natural insecticides (pyrethrins)."],
 ["Marguerite daisy", "Argyranthemum frutescens", "garden", "Statewide", "avoid", "", ["ttgarden", "ucanr"], "The Tortoise Table allows a little, but UC lists it as mildly toxic; we take the cautious side."],
 ["African daisy", "Osteospermum spp.", "garden", "Statewide; common in landscaping", "avoid", "", ["ttgarden"], "Only one source so far."],
-["Cornflower (bachelor's button)", "Centaurea cyanus", "garden", "Statewide", "spar", "Flowers and leaves", ["ttgarden", "ttwild", "club"], ""],
+["Cornflower (bachelor's button)", "Centaurea cyanus", "garden", "Statewide", "mod", "Flowers and leaves", ["ttgarden", "ttwild", "club"], ""],
 ["French marigold", "Tagetes spp.", "garden", "Statewide", "avoid", "", ["ttgarden", "ucanr"], "Not the same as pot marigold (calendula), which is safe."],
 ["Cosmos", "Cosmos spp.", "garden", "Statewide", "spar", "Flowers and leaves", ["ttgarden"], "Only one source so far."],
 ["Dahlia", "Dahlia spp.", "garden", "Statewide", "spar", "Flowers", ["ttgarden"], "Only one source so far."],
 ["Snapdragon", "Antirrhinum majus", "garden", "Statewide", "spar", "Flowers and leaves", ["ttgarden"], "Rated safe by the Tortoise Table. Only one source so far."],
 ["Campanula (bellflower)", "Campanula spp.", "garden", "Statewide", "free", "Flowers and leaves", ["ttgarden", "club"], ""],
 ["Hardy geranium (cranesbill)", "Geranium spp.", "garden", "Statewide", "free", "Flowers and leaves", ["ttgarden", "ttwild", "club"], "Not the same as the common garden geranium (Pelargonium)."],
-["Hosta", "Hosta spp.", "garden", "NorCal; shade gardens", "spar", "Leaves", ["ttgarden", "club"], ""],
+["Hosta", "Hosta spp.", "garden", "NorCal; shade gardens", "mod", "Leaves", ["ttgarden", "club"], ""],
 ["Sweet alyssum", "Lobularia maritima", "garden", "Statewide", "spar", "Flowers and leaves", ["ttgarden"], "Only one source so far."],
 ["Coneflower (echinacea)", "Echinacea spp.", "garden", "Statewide", "spar", "Flowers and leaves", ["ttgarden"], "Rated safe by the Tortoise Table. Only one source so far."],
 ["Black-eyed Susan", "Rudbeckia spp.", "garden", "Statewide", "avoid", "", ["ttgarden"], "Only one source so far."],
@@ -328,7 +331,7 @@ const P=[
 ["Heliotrope", "Heliotropium arborescens", "garden", "Statewide", "toxic", "", ["ttgarden", "ucanr"], ""],
 ["Moss rose", "Portulaca grandiflora", "garden", "Statewide", "avoid", "", ["ttgarden"], "One US keeper group lists it as a plant to grow; the Tortoise Table says don't feed it."]
 ];
-const ORDER={free:0,spar:1,avoid:2,toxic:3,nyr:4};
+const ORDER={free:0,mod:1,spar:2,avoid:3,toxic:4,nyr:5};
 const $=s=>document.querySelector(s);
 const esc=s=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let cat="all",rate="all";
@@ -343,7 +346,7 @@ function chips(el,items,cur,set){
 }
 function render(){
   chips($("#catChips"),[["all","All types"],...Object.entries(CAT)],cat,k=>{cat=k;store("gg-cat",k)});
-  chips($("#rateChips"),[["all","Any rating"],["free","Feed freely"],["spar","Sparingly"],["bad","Avoid / toxic"],["nyr","Not rated"]],rate,k=>{rate=k});
+  chips($("#rateChips"),[["all","Any rating"],["free","Feed freely"],["mod","Moderation"],["spar","Sparingly"],["bad","Avoid / toxic"],["nyr","Not rated"]],rate,k=>{rate=k});
   const q=$("#q").value.trim().toLowerCase();
   $("#clear").hidden=!q;
   const rows=P.map((p,i)=>({p,i})).filter(({p})=>
@@ -365,7 +368,7 @@ function show(i){
    <dl class="facts">
      ${p[5]?`<dt>Safe parts</dt><dd>${esc(p[5])}</dd>`:""}
      <dt>In California</dt><dd>${esc(p[3])}</dd>
-     ${p[4]==="free"||p[4]==="spar"?`<dt>Before feeding</dt><dd>Pick only where nothing has been sprayed or fertilized</dd>`:""}
+     ${p[4]==="free"||p[4]==="mod"||p[4]==="spar"?`<dt>Before feeding</dt><dd>Pick only where nothing has been sprayed or fertilized</dd>`:""}
    </dl>
    ${p[7]?`<div class="note">${esc(p[7])}</div>`:""}
    <h2>Sources</h2>
