@@ -1,8 +1,9 @@
 // Offline support: cache the app shell, then serve from cache and refresh in the background.
-const CACHE = "graze-guide-v2";
+const CACHE = "graze-guide-v3";
 const SHELL = [
   "./",
   "./index.html",
+  "./privacy.html",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
