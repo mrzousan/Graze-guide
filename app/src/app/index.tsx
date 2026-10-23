@@ -77,7 +77,7 @@ export default function SearchScreen() {
         </Text>
       </View>
       <Link href="/guide" asChild>
-        <Pressable style={[styles.guideBtn, { backgroundColor: c.surface, borderColor: c.line }]}>
+        <Pressable style={StyleSheet.flatten([styles.guideBtn, { backgroundColor: c.surface, borderColor: c.line }])}>
           <Text style={[styles.guideText, { color: c.text }]}>Feeding guide for Hermann's tortoises</Text>
           <Text style={{ color: c.accent, fontSize: 18 }}>›</Text>
         </Pressable>
@@ -118,7 +118,7 @@ export default function SearchScreen() {
       )}
       renderItem={({ item }) => (
         <Link href={{ pathname: '/plant/[id]', params: { id: item.id } }} asChild>
-          <Pressable style={[styles.row, { borderBottomColor: c.line }]}>
+          <Pressable style={StyleSheet.flatten([styles.row, { borderBottomColor: c.line }])}>
             <View style={styles.rowText}>
               <Text style={[styles.name, { color: c.text }]}>{item.name}</Text>
               <Text style={[styles.sub, { color: c.muted }]} numberOfLines={1}>
