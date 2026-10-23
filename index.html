@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2F5A2B">
+<meta name="description" content="Can my tortoise eat it? Safety ratings for California plants and foods, for Hermann's and other Mediterranean tortoises.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Graze Guide">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}</style>
+<title>Graze Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: one phone-width column; search bar sticks, list below, detail replaces the list */
+:root{
+  --bg:#FFFFFF; --surface:#EEF2EA; --line:#E1E7DC; --fg:#1B2620; --muted:#4F5D52; --accent:#2F5A2B; --accent-fg:#FFFFFF;
+  --free-bg:#DCEBD8; --free-fg:#1F4D24;
+  --spar-bg:#FBEFD6; --spar-fg:#6E4700;
+  --avoid-bg:#FBE1D3; --avoid-fg:#8A2F0A;
+  --toxic-bg:#7A1414; --toxic-fg:#FFFFFF;
+  --nyr-line:#7A877D; --nyr-fg:#3E4A41;
+  --warn-bg:#FDF6E6; --warn-line:#E6CF9C; --warn-fg:#4A3300;
+  --display:'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --body:'Instrument Sans', system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141A16; --surface:#1F2822; --line:#2C362F; --fg:#E7EDE6; --muted:#A9B5AB; --accent:#9CCB8F; --accent-fg:#102012;
+  --free-bg:#24402A; --free-fg:#BFE3B6; --spar-bg:#463513; --spar-fg:#F3D693; --avoid-bg:#4D2516; --avoid-fg:#F6C0A6;
+  --toxic-bg:#B42323; --toxic-fg:#FFFFFF; --nyr-line:#8A978C; --nyr-fg:#C9D3CA;
+  --warn-bg:#2E2614; --warn-line:#6B5627; --warn-fg:#F1DFB4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141A16; --surface:#1F2822; --line:#2C362F; --fg:#E7EDE6; --muted:#A9B5AB; --accent:#9CCB8F; --accent-fg:#102012;
+  --free-bg:#24402A; --free-fg:#BFE3B6; --spar-bg:#463513; --spar-fg:#F3D693; --avoid-bg:#4D2516; --avoid-fg:#F6C0A6;
+  --toxic-bg:#B42323; --toxic-fg:#FFFFFF; --nyr-line:#8A978C; --nyr-fg:#C9D3CA;
+  --warn-bg:#2E2614; --warn-line:#6B5627; --warn-fg:#F1DFB4; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.45}
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+h1{font-family:var(--display);font-size:30px;font-weight:700;letter-spacing:-.5px;margin:0;text-wrap:balance}
+.proto{display:flex;gap:10px;padding:12px 14px;border:1px solid var(--warn-line);background:var(--warn-bg);color:var(--warn-fg);border-radius:12px;font-size:14px;margin-top:12px}
+.sticky{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;padding-block:14px 10px;display:flex;flex-direction:column;gap:10px}
+.who{font-size:14px;color:var(--muted)}
+.search{display:flex;align-items:center;gap:10px;height:52px;padding:0 14px;border:2px solid var(--accent);border-radius:14px;background:var(--bg)}
+.search input{flex:1;min-width:0;border:0;outline:none;background:transparent;color:var(--fg);font:inherit;font-size:17px}
+.search button{border:0;background:none;color:var(--muted);font:inherit;font-size:14px;min-height:44px;padding:0 4px;cursor:pointer}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;min-height:38px;padding:0 14px;border:1px solid var(--line);border-radius:19px;background:var(--bg);color:var(--fg);font:inherit;font-size:14px;font-weight:500;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg);font-weight:600}
+.count{font-size:13px;color:var(--muted)}
+ul.list{list-style:none;margin:0;padding:0}
+ul.list li{border-bottom:1px solid var(--line)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;min-height:64px;padding:8px 2px;border:0;background:none;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
+.row .t{display:flex;flex-direction:column;min-width:0}
+.row .n{font-size:16px;font-weight:600}
+.row .s{font-size:13px;color:var(--muted)}
+.pill{flex-shrink:0;padding:4px 10px;border-radius:10px;font-size:13px;font-weight:600;white-space:nowrap}
+.r-free{background:var(--free-bg);color:var(--free-fg)}
+.r-spar{background:var(--spar-bg);color:var(--spar-fg)}
+.r-avoid{background:var(--avoid-bg);color:var(--avoid-fg)}
+.r-toxic{background:var(--toxic-bg);color:var(--toxic-fg)}
+.r-nyr{border:1px dashed var(--nyr-line);color:var(--nyr-fg)}
+.empty{padding:32px 4px;color:var(--muted)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+/* detail */
+.back{display:inline-flex;align-items:center;gap:6px;min-height:44px;border:0;background:none;color:var(--accent);font:inherit;font-weight:600;padding:0;cursor:pointer}
+.d-head{display:flex;flex-direction:column;gap:2px;margin-top:8px}
+.d-sci{color:var(--muted)}
+.verdict{margin-top:16px;padding:16px;border-radius:16px;display:flex;flex-direction:column;gap:6px}
+.verdict .v{font-family:var(--display);font-size:24px;font-weight:700}
+.verdict.r-nyr{background:var(--surface)}
+dl.facts{display:grid;grid-template-columns:120px minmax(0,1fr);gap:10px 12px;margin:20px 0 0}
+dl.facts dt{color:var(--muted)}
+dl.facts dd{margin:0;font-weight:600;min-width:0}
+.note{margin-top:16px;padding:14px 16px;border-radius:14px;border:1px solid var(--warn-line);background:var(--warn-bg);color:var(--warn-fg);font-size:15px}
+h2{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:24px 0 8px}
+.srcs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.srcs a{color:var(--accent)}
+.status{font-size:14px;color:var(--muted);margin-top:8px}
+.disc{margin-top:24px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.row{transition:background .12s}.row:hover{background:var(--surface)}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <h1>Can my tortoise eat it?</h1>
+  <div class="proto" role="note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v6M12 16.5h.01"></path></svg><span><strong>Test version.</strong> Ratings are drafts still being checked. Don't use this to decide what to feed until a reptile vet has reviewed it.</span></div>
+
+  <section id="listView">
+    <div class="sticky">
+      <div class="who">Hermann's and other Mediterranean tortoises · California</div>
+      <label class="search" for="q">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+        <input id="q" type="search" placeholder="Search a plant or food" autocomplete="off" aria-label="Search a plant or food">
+        <button id="clear" type="button" hidden>Clear</button>
+      </label>
+      <div class="chips" role="group" aria-label="Type" id="catChips"></div>
+      <div class="chips" role="group" aria-label="Rating" id="rateChips"></div>
+      <div class="count" id="count" aria-live="polite"></div>
+    </div>
+    <ul class="list" id="list"></ul>
+  </section>
+
+  <section id="detailView" hidden></section>
+</div>
+
+<script>
+const SRC={
+ rvc:["Royal Veterinary College care sheet","https://www.rvc.ac.uk/Media/Default/small-animal/documents/Mediterranean-tortoise-care%20-%20UPDATED-1.pdf"],
+ rvc24:["Royal Veterinary College care sheet (2024)","https://rvc.ac.uk/Media/Default/Beaumont%20Sainsbury%20Animal%20Hospital/EXOTICS/Animal%20Care%20Factsheets/Mediterranean%20tortoise%20care%202024%20jh.pdf"],
+ trust:["Tortoise Trust feeding guide","https://www.tortoisetrust.org/articles/basicmedfood.htm"],
+ club:["Norfolk Tortoise Club food list","https://www.tortoiseclub.org/s/3_HEALTHY_TORTOISE_FOOD_23.pdf"],
+ clubweb:["Norfolk Tortoise Club plant guide","https://www.tortoiseclub.org/?p=19"],
+ group:["Tortoise Group plants to grow","https://dev.tortoisegroup.org/wp-content/uploads/2026/01/Plants-List-TG-Flyer-1.pdf"],
+ groupfood:["Tortoise Group food page","https://tortoisegroup.org/food"],
+ kaplan:["Melissa Kaplan tortoise diet","https://anapsid.org/tortdiet.html"],
+ kaplanlist:["Melissa Kaplan edible plants list","https://anapsid.org/resources/edible.html"],
+ ucanr:["UC ANR toxic plants list","https://ccfruitandnuts.ucanr.edu/sites/default/files/2022-02/363609.pdf"],
+ ucmarin:["UC Marin Master Gardeners","https://ucanr.edu/node/170536"],
+ uceld:["UC El Dorado Master Gardeners","https://ccfruitandnuts.ucanr.edu/sites/default/files/2018-11/294865.pdf"],
+ afox:["ASPCA: foxglove","https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/foxglove"],
+ apothos:["ASPCA: golden pothos","https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/golden-pothos"],
+ aivy:["ASPCA: English ivy","https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/english-ivy"],
+ acal:["ASPCA: pot marigold","https://www.aspca.org/node/5287"],
+ ness:["Ness Exotic Wellness Center care sheet","https://nessexotic.com/wp-content/uploads/2022/04/Reptile-Russian_Tortoise_Care.pdf"],
+ ivis:["IVIS vet guide: oxalis","https://www.ivis.org/library/guide-to-poisonous-house-and-garden-plants/oxalis-species-sorrel"],
+ massey:["Massey University: Bermuda buttercup","https://poisonousplants.massey.ac.nz/data/bermuda_buttercup/bermBcup.html"],
+ lsu:["LSU Vet School: agapanthus","https://lsu.edu/vetmed/toxic_plants/agapanthus.php"],
+ usgs:["USGS desert tortoise study","https://pubs.usgs.gov/publication/70250364"],
+ mdc:["Missouri Dept. of Conservation: curly dock","https://mdc.mo.gov/node/269121"],
+ tpg:["Tortoise Protection Group forum","https://tortoise-protection-group.org.uk/site/tpg_members_forum_130.asp?tID=3509"],
+ mouse:["Bindweed mouse feeding study","https://www.sigmaaldrich.com/MX/es/tech-docs/paper/328091"]
+};
+const RATE={free:"Feed freely",spar:"Feed sparingly",avoid:"Avoid",toxic:"Toxic",nyr:"Not yet rated"};
+const BLURB={
+ free:"Fine as a regular part of a varied mix.",
+ spar:"Safe in small amounts, mixed with other plants. Don't make it a staple.",
+ avoid:"Don't offer it. Remove it from the enclosure if it grows there.",
+ toxic:"Poisonous. Keep it out of reach. If your tortoise ate some, call a reptile vet.",
+ nyr:"We haven't found a reliable source yet. Don't feed it until it's rated."
+};
+const CAT={weed:"Weeds & lawn",garden:"Garden & landscape",house:"Houseplants",grocery:"Grocery"};
+// [name, scientific, cat, where in CA, rating, parts/note, sources, extra note]
+const P=[
+["Dandelion","Taraxacum officinale","weed","Statewide","free","Leaves and flowers",["rvc","trust","club","group"],"Young tortoises: sources disagree. One club warns against large amounts for very young tortoises; another calls it important for hatchlings. Keep it in a mix."],
+["Cat's ear","Hypochaeris radicata","weed","Statewide; very common in NorCal lawns","spar","Leaves, flowers and roots",["club","clubweb"],"Often mistaken for dandelion. Cat's ear has solid stems; dandelion's are hollow. Both sources are from the same club, so we're holding it at sparingly for now."],
+["Smooth hawksbeard","Crepis capillaris","weed","NorCal","spar","Leaves and flowers",["club"],""],
+["Broadleaf plantain","Plantago major","weed","Statewide","free","Leaves",["rvc","club"],""],
+["Narrowleaf plantain","Plantago lanceolata","weed","Statewide","free","Leaves",["rvc","club"],""],
+["Cheeseweed mallow","Malva parviflora","weed","Statewide","free","Leaves and flowers",["club","kaplan"],"Sources rate mallow as a group, not this species specifically."],
+["Common sow thistle","Sonchus oleraceus","weed","Statewide","free","Leaves and flowers",["rvc","trust","club"],""],
+["Prickly lettuce","Lactuca serriola","weed","Statewide","nyr","",[],""],
+["Redstem filaree","Erodium cicutarium","weed","Statewide","free","Leaves, flowers and seed heads",["group","usgs"],"Wild desert tortoises eat it in California."],
+["White clover","Trifolium repens","weed","Statewide","spar","Leaves and flowers",["trust","clubweb","kaplan"],"High in protein. Occasional only for young tortoises."],
+["Bur clover","Medicago polymorpha","weed","Statewide","nyr","",[],""],
+["Chickweed","Stellaria media","weed","NorCal","free","Whole plant",["rvc","club"],""],
+["Field bindweed","Convolvulus arvensis","weed","Statewide","spar","Leaves and flowers",["rvc","club","mouse"],"Keeper groups list it, but a lab study found liver damage in mice fed only bindweed. Occasional only."],
+["Common chicory","Cichorium intybus","weed","NorCal","spar","Leaves and flowers",["clubweb","club"],"Same species as radicchio."],
+["Wild radish","Raphanus sativus","weed","Statewide; coastal","nyr","",[],""],
+["Black mustard","Brassica nigra","weed","Roadsides and hills","spar","Leaves and flowers",["club"],"Mustard family: rotate, never a staple."],
+["Shepherd's purse","Capsella bursa-pastoris","weed","Statewide","spar","Leaves",["club"],""],
+["Hairy bittercress","Cardamine hirsuta","weed","NorCal","spar","Leaves",["club"],""],
+["Common purslane","Portulaca oleracea","weed","Statewide; summer","nyr","",[],""],
+["Miner's lettuce","Claytonia perfoliata","weed","NorCal; shady spots","nyr","",[],""],
+["Bermuda buttercup (sourgrass)","Oxalis pes-caprae","weed","Coastal NorCal and SoCal","avoid","",["ivis","massey"],"High in soluble oxalates, which bind calcium."],
+["Curly dock","Rumex crispus","weed","Statewide","avoid","",["mdc","tpg"],"High in oxalic acid. One vet school lists dock as food; we take the cautious side."],
+["Bermuda grass","Cynodon dactylon","weed","Statewide","free","Growing grass",["rvc","kaplan","group"],"Let them graze it. Not clippings, and only untreated lawns."],
+["Poison hemlock","Conium maculatum","weed","Statewide; roadsides","toxic","",["ucanr","ucmarin"],"Deadly. Looks like wild carrot."],
+["Hibiscus","Hibiscus rosa-sinensis","garden","SoCal; mild NorCal","free","Leaves and flowers",["rvc24","club","group"],""],
+["Rose","Rosa spp.","garden","Statewide","free","Petals and leaves",["trust","club","kaplan"],"Only from plants never sprayed."],
+["Pansy / viola","Viola spp.","garden","Statewide","free","Flowers and leaves, not seeds",["club","group"],"The seeds are mildly toxic."],
+["Nasturtium","Tropaeolum majus","garden","Coastal","spar","Leaves and flowers",["rvc24","kaplan"],"Peppery mustard oils."],
+["Prickly pear pads","Opuntia ficus-indica","garden","SoCal","free","Young pads and flowers",["club","group","kaplan"],"Remove every spine and the tiny hair-like glochids."],
+["Mulberry leaves","Morus alba","garden","Statewide","free","Young leaves",["club","group"],""],
+["Grape leaves","Vitis vinifera","garden","Statewide","free","Young leaves, no fruit",["rvc","club","group"],""],
+["Ice plant","Carpobrotus edulis","garden","Coastal","nyr","",[],""],
+["Garden geranium","Pelargonium spp.","garden","Statewide","spar","Flowers and leaves",["kaplanlist","group"],""],
+["Calendula","Calendula officinalis","garden","Statewide","spar","Flowers",["acal"],"Only one source so far."],
+["Oleander","Nerium oleander","garden","Statewide; freeway medians","toxic","",["ucanr","ucmarin","group"],"Every part is highly toxic."],
+["Foxglove","Digitalis purpurea","garden","NorCal","toxic","",["ucanr","afox"],"Contains heart toxins."],
+["Calla lily","Zantedeschia aethiopica","garden","Coastal","toxic","",["ucanr","uceld"],"Needle-like oxalate crystals."],
+["Lily of the Nile","Agapanthus spp.","garden","Statewide","avoid","",["ucanr","lsu"],"Mildly toxic unless eaten in quantity."],
+["Lantana","Lantana camara","garden","SoCal; Central Valley","toxic","",["ucanr","uceld"],""],
+["Azalea / rhododendron","Rhododendron spp.","garden","NorCal","toxic","",["ucanr","uceld"],""],
+["English ivy","Hedera helix","garden","NorCal","toxic","",["ucanr","aivy"],""],
+["Daffodil","Narcissus spp.","garden","Statewide","toxic","",["ucanr","ucmarin"],""],
+["Pothos","Epipremnum aureum","house","Indoors","toxic","",["ucanr","apothos"],"Needle-like oxalate crystals."],
+["Endive / escarole","Cichorium endivia","grocery","Any grocery store","spar","Leaves",["ness","kaplan"],"The best store-bought green, but weeds are better."],
+["Romaine lettuce","Lactuca sativa","grocery","Any grocery store","spar","Leaves",["rvc","trust"],"Low nutrition. Filler only."],
+["Spring mix","Mixed greens","grocery","Any grocery store","spar","Leaves",["club","rvc"],"Check the label: skip mixes with spinach, kale or cabbage."],
+["Collard greens","Brassica oleracea","grocery","Any grocery store","spar","Leaves",["kaplan","groupfood"],"Can affect the thyroid. Rotate, never a staple."],
+["Kale","Brassica oleracea","grocery","Any grocery store","spar","Leaves, tough ribs removed",["kaplan","groupfood"],"Can affect the thyroid. Rotate, never a staple."],
+["Spinach","Spinacia oleracea","grocery","Any grocery store","avoid","",["groupfood","club"],"High in oxalic acid, which blocks calcium."],
+["Fruit (strawberries, apples, etc.)","Various","grocery","Any grocery store","avoid","",["trust","club"],"Too much sugar for Mediterranean tortoises."]
+];
+const ORDER={free:0,spar:1,avoid:2,toxic:3,nyr:4};
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let cat="all",rate="all";
+function store(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
+cat=load("gg-cat")||"all";
+function status(p){const n=new Set(p[6].map(k=>k.replace(/web$/,""))).size;return n>=2?"Sourced":n===1?"One source so far":"No source yet"}
+function chips(el,items,cur,set){
+  el.innerHTML=items.map(([k,l])=>`<button type="button" class="chip" aria-pressed="${k===cur}" data-k="${k}">${l}</button>`).join("");
+  el.onclick=e=>{const b=e.target.closest(".chip");if(!b)return;set(b.dataset.k);render()};
+}
+function render(){
+  chips($("#catChips"),[["all","All types"],...Object.entries(CAT)],cat,k=>{cat=k;store("gg-cat",k)});
+  chips($("#rateChips"),[["all","Any rating"],["free","Feed freely"],["spar","Sparingly"],["bad","Avoid / toxic"],["nyr","Not rated"]],rate,k=>{rate=k});
+  const q=$("#q").value.trim().toLowerCase();
+  $("#clear").hidden=!q;
+  const rows=P.map((p,i)=>({p,i})).filter(({p})=>
+    (cat==="all"||p[2]===cat)&&
+    (rate==="all"||(rate==="bad"?(p[4]==="avoid"||p[4]==="toxic"):p[4]===rate))&&
+    (!q||p[0].toLowerCase().includes(q)||p[1].toLowerCase().includes(q)));
+  rows.sort((a,b)=>a.p[0].localeCompare(b.p[0]));
+  $("#count").textContent=`${rows.length} of ${P.length} plants and foods`;
+  $("#list").innerHTML=rows.length?rows.map(({p,i})=>`<li><button type="button" class="row" data-i="${i}"><span class="t"><span class="n">${esc(p[0])}</span><span class="s"><i>${esc(p[1])}</i> · ${status(p)}</span></span><span class="pill r-${p[4]}">${RATE[p[4]]}</span></button></li>`).join("")
+   :`<li class="empty">Nothing matches "${esc(q)}" yet. Try the scientific name, or check another type. If it's not listed, treat it as not rated and don't feed it.</li>`;
+}
+function show(i){
+  const p=P[i];
+  const src=p[6].map(k=>`<li><a href="${SRC[k][1]}" target="_blank" rel="noopener">${esc(SRC[k][0])}</a></li>`).join("");
+  $("#detailView").innerHTML=`
+   <button type="button" class="back" id="back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>All plants</button>
+   <div class="d-head"><h1 id="dTitle" tabindex="-1">${esc(p[0])}</h1><div class="d-sci"><i>${esc(p[1])}</i> · ${CAT[p[2]]}</div></div>
+   <div class="verdict r-${p[4]}"><span class="v">${RATE[p[4]]}</span><span>${BLURB[p[4]]}</span></div>
+   <dl class="facts">
+     ${p[5]?`<dt>Safe parts</dt><dd>${esc(p[5])}</dd>`:""}
+     <dt>In California</dt><dd>${esc(p[3])}</dd>
+     ${p[4]==="free"||p[4]==="spar"?`<dt>Before feeding</dt><dd>Pick only where nothing has been sprayed or fertilized</dd>`:""}
+   </dl>
+   ${p[7]?`<div class="note">${esc(p[7])}</div>`:""}
+   <h2>Sources</h2>
+   ${src?`<ul class="srcs">${src}</ul>`:`<p class="status">No source rates this plant for tortoises yet.</p>`}
+   <p class="status">${status(p)} · Not yet reviewed by a vet</p>
+   <p class="disc">General guidance, not veterinary advice. If your tortoise seems unwell or ate something unknown, contact a reptile vet.</p>`;
+  $("#listView").hidden=true;$("#detailView").hidden=false;window.scrollTo(0,0);
+  $("#dTitle").focus({preventScroll:true});
+  $("#back").onclick=()=>{$("#detailView").hidden=true;$("#listView").hidden=false;const b=document.querySelector(`.row[data-i="${i}"]`);if(b)b.focus()};
+}
+$("#list").addEventListener("click",e=>{const b=e.target.closest(".row");if(b)show(+b.dataset.i)});
+$("#q").addEventListener("input",render);
+$("#clear").addEventListener("click",()=>{$("#q").value="";render();$("#q").focus()});
+render();
+</script>
+<script>
+if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})})}
+</script>
+</body>
+</html>
