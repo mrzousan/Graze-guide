@@ -67,6 +67,15 @@ ul.list li{border-bottom:1px solid var(--line)}
 .r-toxic{background:var(--toxic-bg);color:var(--toxic-fg)}
 .r-nyr{border:1px dashed var(--nyr-line);color:var(--nyr-fg)}
 .empty{padding:32px 4px;color:var(--muted)}
+.guide-btn{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:52px;margin-top:12px;padding:0 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--fg);font:inherit;font-weight:600;text-align:left;cursor:pointer}
+.az{display:flex;flex-wrap:wrap;gap:2px;margin:4px 0 6px}
+.az button{min-width:30px;min-height:32px;border:0;border-radius:8px;background:none;color:var(--accent);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.az button:hover{background:var(--surface)}
+ul.list li.letter{border-bottom:0;padding:16px 2px 4px;font-family:var(--display);font-size:18px;font-weight:700;color:var(--muted);scroll-margin-top:300px}
+.guide h2{font-size:20px;text-transform:none;letter-spacing:0;color:var(--fg);margin:28px 0 8px}
+.guide p,.guide li{max-width:65ch}
+.guide ul{padding-left:20px;margin:0;display:flex;flex-direction:column;gap:6px}
+.guide .lead{font-size:17px;margin-top:8px}
 button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 /* detail */
 .back{display:inline-flex;align-items:center;gap:6px;min-height:44px;border:0;background:none;color:var(--accent);font:inherit;font-weight:600;padding:0;cursor:pointer}
@@ -94,6 +103,7 @@ h2{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;le
   <div class="proto" role="note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v6M12 16.5h.01"></path></svg><span><strong>Test version.</strong> Ratings are drafts still being checked. Don't use this to decide what to feed until a reptile vet has reviewed it.</span></div>
 
   <section id="listView">
+  <button type="button" class="guide-btn" id="openGuide">Feeding guide for Hermann's tortoises <span aria-hidden="true">→</span></button>
     <div class="sticky">
       <div class="who">Hermann's and other Mediterranean tortoises · California</div>
       <label class="search" for="q">
@@ -102,13 +112,16 @@ h2{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;le
         <button id="clear" type="button" hidden>Clear</button>
       </label>
       <div class="chips" role="group" aria-label="Type" id="catChips"></div>
+      <div class="chips" role="group" aria-label="Region" id="regionChips"></div>
       <div class="chips" role="group" aria-label="Rating" id="rateChips"></div>
       <div class="count" id="count" aria-live="polite"></div>
     </div>
+    <nav class="az" id="az" aria-label="Jump to letter"></nav>
     <ul class="list" id="list"></ul>
   </section>
 
   <section id="detailView" hidden></section>
+  <section id="guideView" class="guide" hidden></section>
   <p class="disc"><a href="privacy.html" style="color:var(--accent)">Privacy policy</a></p>
 </div>
 
@@ -535,10 +548,12 @@ const P=[
 const ORDER={free:0,mod:1,spar:2,avoid:3,toxic:4,nyr:5};
 const $=s=>document.querySelector(s);
 const esc=s=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let cat="all",rate="all";
+let cat="all",rate="all",reg="all";
 function store(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
-cat=load("gg-cat")||"all";
+cat=load("gg-cat")||"all";reg=load("gg-reg")||"all";
+function region(p){const n=/NorCal/.test(p[3]),s=/SoCal/.test(p[3]);return n&&!s?"norcal":s&&!n?"socal":"both"}
+const FEED=["free","mod","spar"];
 const ORG={rvc24:"rvc",clubweb:"club",kaplanlist:"kaplan",groupfood:"group",groupbad:"group",ttgarden:"tt",ttwild:"tt",ttveg:"tt",ttgrass:"tt",ttsucc:"tt",tttree:"tt",ucipm_yst:"uc",ucmg_fiddle:"uc",ucmarin:"uc",uceld:"uc",ucanr:"uc",trustlist:"trust",afox:"aspca",apothos:"aspca",aivy:"aspca",acal:"aspca",aground:"aspca",aspider:"aspca",aaloe:"aspca",asun:"aspca",adaisy:"aspca",aspcadog:"aspca",achamo:"aspca",ajasmine:"aspca"};
 function status(p){const n=new Set(p[6].map(k=>ORG[k]||k)).size;return n>=2?"Sourced":n===1?"One source so far":"No source yet"}
 function chips(el,items,cur,set){
@@ -547,18 +562,79 @@ function chips(el,items,cur,set){
 }
 function render(){
   chips($("#catChips"),[["all","All types"],...Object.entries(CAT)],cat,k=>{cat=k;store("gg-cat",k)});
-  chips($("#rateChips"),[["all","Any rating"],["free","Feed freely"],["mod","Moderation"],["spar","Sparingly"],["bad","Avoid / toxic"],["nyr","Not rated"]],rate,k=>{rate=k});
+  chips($("#regionChips"),[["all","All of California"],["norcal","Northern CA"],["socal","Southern CA"]],reg,k=>{reg=k;store("gg-reg",k)});
+  chips($("#rateChips"),[["all","Any rating"],["feed","Can feed"],["free","Feed freely"],["mod","Moderation"],["spar","Sparingly"],["bad","Avoid / toxic"],["nyr","Not rated"]],rate,k=>{rate=k});
   const q=$("#q").value.trim().toLowerCase();
   $("#clear").hidden=!q;
   const rows=P.map((p,i)=>({p,i})).filter(({p})=>
     (cat==="all"||p[2]===cat)&&
-    (rate==="all"||(rate==="bad"?(p[4]==="avoid"||p[4]==="toxic"):p[4]===rate))&&
+    (rate==="all"||(rate==="bad"?(p[4]==="avoid"||p[4]==="toxic"):rate==="feed"?FEED.includes(p[4]):p[4]===rate))&&
+    (reg==="all"||region(p)==="both"||region(p)===reg)&&
     (!q||p[0].toLowerCase().includes(q)||p[1].toLowerCase().includes(q)));
   rows.sort((a,b)=>a.p[0].localeCompare(b.p[0]));
   $("#count").textContent=`${rows.length} of ${P.length} plants and foods`;
-  $("#list").innerHTML=rows.length?rows.map(({p,i})=>`<li><button type="button" class="row" data-i="${i}"><span class="t"><span class="n">${esc(p[0])}</span><span class="s"><i>${esc(p[1])}</i> · ${status(p)}</span></span><span class="pill r-${p[4]}">${RATE[p[4]]}</span></button></li>`).join("")
-   :`<li class="empty">Nothing matches "${esc(q)}" yet. Try the scientific name, or check another type. If it's not listed, treat it as not rated and don't feed it.</li>`;
+  let last="",letters=[];
+  const L=n=>{const c=n[0].toUpperCase();return /[A-Z]/.test(c)?c:"#"};
+  $("#list").innerHTML=rows.length?rows.map(({p,i})=>{const l=L(p[0]);let h="";if(l!==last){last=l;letters.push(l);h=`<li class="letter" id="L-${l}" aria-hidden="true">${l}</li>`}
+    return h+`<li><button type="button" class="row" data-i="${i}"><span class="t"><span class="n">${esc(p[0])}</span><span class="s"><i>${esc(p[1])}</i> · ${status(p)}</span></span><span class="pill r-${p[4]}">${RATE[p[4]]}</span></button></li>`}).join("")
+   :`<li class="empty">Nothing matches "${esc(q)}" yet. Try the scientific name, or check another type or region. If it's not listed, treat it as not rated and don't feed it.</li>`;
+  $("#az").hidden=letters.length<5;
+  $("#az").innerHTML=letters.map(l=>`<button type="button" data-l="${l}" aria-label="Jump to ${l}">${l}</button>`).join("");
 }
+$("#az").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const t=document.getElementById("L-"+b.dataset.l);if(t)t.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})});
+function srcLink(k){return `<a href="${SRC[k][1]}" target="_blank" rel="noopener">${esc(SRC[k][0])}</a>`}
+function showGuide(){
+  $("#guideView").innerHTML=`
+   <button type="button" class="back" id="gBack"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>All plants</button>
+   <h1 id="gTitle" tabindex="-1">Feeding a Hermann's tortoise</h1>
+   <p class="lead">Hermann's and other Mediterranean tortoises do best on a varied, high-fiber diet of weeds and flowers that's low in protein and sugar.</p>
+   <h2>What to feed</h2>
+   <ul>
+     <li>Make weeds and flowers more than 70% of the diet. Good staples include dandelion, cat's ear, plantain, sow thistle and mallow.</li>
+     <li>Mix several kinds every day. Variety keeps any one plant's oxalates or thyroid-affecting compounds from building up.</li>
+     <li>Use grocery greens such as endive or romaine only when weeds aren't available.</li>
+     <li>Let them graze outdoors when you can. It helps digestion and helps prevent obesity.</li>
+   </ul>
+   <h2>What not to feed</h2>
+   <ul>
+     <li><strong>Fruit.</strong> Too much sugar, with more phosphorus than calcium. It can cause digestive upset and parasite problems.</li>
+     <li><strong>High-protein foods:</strong> cat or dog food, meat, peas and beans. These are linked to kidney failure, bladder stones and shell deformities.</li>
+     <li><strong>Iceberg lettuce.</strong> Almost no fiber, vitamins or minerals.</li>
+     <li><strong>Anything rated Avoid or Toxic</strong> in this guide.</li>
+   </ul>
+   <h2>Calcium and supplements</h2>
+   <ul>
+     <li>Dust food with a phosphorus-free calcium supplement at least twice a week, and more often for young tortoises.</li>
+     <li>Supermarket greens need supplementing most. A cuttlefish bone is welcome but shouldn't be the only calcium source.</li>
+     <li>Diet works together with UVB light, which Mediterranean tortoises need.</li>
+   </ul>
+   <h2>Water</h2>
+   <ul>
+     <li>Keep fresh water in a shallow dish your tortoise can climb into, and change it daily.</li>
+     <li>Soak your tortoise in shallow, lukewarm water for about 10 minutes twice a week.</li>
+   </ul>
+   <h2>Young tortoises</h2>
+   <ul>
+     <li>Supplement calcium more often than for adults.</li>
+     <li>Offer clover only occasionally; it's high in protein.</li>
+     <li>Sources disagree on large amounts of dandelion for very young tortoises, so keep it in a mix rather than the whole meal.</li>
+   </ul>
+   <h2>Picking plants safely</h2>
+   <ul>
+     <li>Pick only where nothing has been sprayed or fertilized.</li>
+     <li>Avoid busy roadsides, where plants can carry lead from exhaust.</li>
+     <li>If you can't identify a plant for certain, don't feed it.</li>
+   </ul>
+   <h2>Sources</h2>
+   <ul class="srcs">
+     <li>${srcLink("rvc24")}</li><li>${srcLink("rvc")}</li><li>${srcLink("trust")}</li><li>${srcLink("trustlist")}</li><li>${srcLink("clubweb")}</li>
+   </ul>
+   <p class="disc">General guidance, not veterinary advice. Ask a reptile vet about your own tortoise's needs.</p>`;
+  $("#listView").hidden=true;$("#detailView").hidden=true;$("#guideView").hidden=false;window.scrollTo(0,0);
+  $("#gTitle").focus({preventScroll:true});
+  $("#gBack").onclick=()=>{$("#guideView").hidden=true;$("#listView").hidden=false;$("#openGuide").focus()};
+}
+$("#openGuide").addEventListener("click",showGuide);
 function show(i){
   const p=P[i];
   const src=p[6].map(k=>`<li><a href="${SRC[k][1]}" target="_blank" rel="noopener">${esc(SRC[k][0])}</a></li>`).join("");
@@ -576,7 +652,7 @@ function show(i){
    ${src?`<ul class="srcs">${src}</ul>`:`<p class="status">No source rates this plant for tortoises yet.</p>`}
    <p class="status">${status(p)} · Not yet reviewed by a vet</p>
    <p class="disc">General guidance, not veterinary advice. If your tortoise seems unwell or ate something unknown, contact a reptile vet.</p>`;
-  $("#listView").hidden=true;$("#detailView").hidden=false;window.scrollTo(0,0);
+  $("#listView").hidden=true;$("#guideView").hidden=true;$("#detailView").hidden=false;window.scrollTo(0,0);
   $("#dTitle").focus({preventScroll:true});
   $("#back").onclick=()=>{$("#detailView").hidden=true;$("#listView").hidden=false;const b=document.querySelector(`.row[data-i="${i}"]`);if(b)b.focus()};
 }
