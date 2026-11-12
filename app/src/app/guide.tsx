@@ -19,7 +19,7 @@ const SECTIONS: { title: string; items: string[] }[] = [
       'Fruit: too much sugar, with more phosphorus than calcium. It can cause digestive upset and parasite problems.',
       'High-protein foods such as cat or dog food, meat, peas and beans. These are linked to kidney failure, bladder stones and shell deformities.',
       'Iceberg lettuce: almost no fiber, vitamins or minerals.',
-      'Anything rated Avoid or Toxic in this guide.',
+      'Anything rated Do not feed or Toxic in this guide.',
     ],
   },
   {

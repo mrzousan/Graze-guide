@@ -4,7 +4,7 @@ export const RATING_LABEL: Record<Rating, string> = {
   free: 'Feed freely',
   mod: 'Feed in moderation',
   spar: 'Feed sparingly',
-  avoid: 'Avoid',
+  avoid: 'Do not feed',
   toxic: 'Toxic',
   nyr: 'Not yet rated',
 };
@@ -13,7 +13,7 @@ export const RATING_BLURB: Record<Rating, string> = {
   free: 'Can be a regular, everyday part of a varied mix.',
   mod: 'Good food, but not every day. Offer it a few times a week, mixed with other plants.',
   spar: 'Safe in small amounts, mixed with other plants. Don\'t make it a staple.',
-  avoid: 'Don\'t offer it. Remove it from the enclosure if it grows there.',
+  avoid: 'Don\'t feed it. Remove it from the enclosure if it grows there.',
   toxic: 'Poisonous. Keep it out of reach. If your tortoise ate some, call a reptile vet.',
   nyr: 'We haven\'t found a reliable source yet. Don\'t feed it until it\'s rated.',
 };

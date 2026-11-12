@@ -22,6 +22,12 @@ export default function AboutScreen() {
         conflict about safety, the guide takes the cautious side. Plants with no source are shown
         as Not yet rated.
       </Text>
+      <Text style={[styles.h2, { color: c.text }]}>Who it's for</Text>
+      <Text style={[styles.body, { color: c.text }]}>
+        Ratings are for Hermann's tortoises and other Mediterranean tortoises (such as Greek and
+        marginated). Other species eat differently, and fruit-eating tortoises need their own
+        ratings.
+      </Text>
       <Text style={[styles.h2, { color: c.text }]}>Not veterinary advice</Text>
       <Text style={[styles.body, { color: c.text }]}>
         This is general guidance. If your tortoise seems unwell or ate something unknown, contact

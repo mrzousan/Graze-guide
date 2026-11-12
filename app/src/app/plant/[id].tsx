@@ -1,8 +1,9 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '@/constants/theme';
 import { CATEGORIES, SOURCES } from '@/data/plants';
+import { IMAGES } from '@/data/images';
 import { FEEDABLE, RATING_BLURB, RATING_LABEL, findPlant, sourceStatus } from '@/lib/ratings';
 
 export default function PlantScreen() {
@@ -46,6 +47,29 @@ export default function PlantScreen() {
         </Text>
       </View>
 
+      {plant.photos.some((ph) => IMAGES[ph.f]) ? (
+        <View style={{ gap: 6 }}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 10 }}>
+            {plant.photos.filter((ph) => IMAGES[ph.f]).map((ph) => (
+              <View key={ph.f} style={{ width: 260, gap: 4 }}>
+                <Image
+                  source={IMAGES[ph.f]}
+                  accessibilityLabel={`Photo of ${plant.name}`}
+                  style={[styles.photo, { backgroundColor: c.surface }]}
+                  resizeMode="cover"
+                />
+                <Pressable accessibilityRole="link" onPress={() => ph.page && Linking.openURL(ph.page)}>
+                  <Text style={{ color: c.muted, fontSize: 12, lineHeight: 16 }}>{ph.line}</Text>
+                </Pressable>
+              </View>
+            ))}
+          </ScrollView>
+          <Text style={{ color: c.muted, fontSize: 12 }}>
+            The plant in your hand may look different from the photo. Compare carefully.
+          </Text>
+        </View>
+      ) : null}
+
       <View style={styles.facts}>
         {plant.parts ? <Fact label="Safe parts" value={plant.parts} muted={c.muted} text={c.text} /> : null}
         <Fact label="In California" value={plant.where} muted={c.muted} text={c.text} />
@@ -58,6 +82,17 @@ export default function PlantScreen() {
           />
         ) : null}
       </View>
+
+      {plant.reason && (plant.rating === 'avoid' || plant.rating === 'toxic') ? (
+        <Fact label="Why" value={plant.reason} muted={c.muted} text={c.text} />
+      ) : null}
+
+      {plant.warning ? (
+        <View style={[styles.note, { backgroundColor: c.warnBg, borderColor: c.warnLine }]}>
+          <Text style={{ color: c.warnText, fontSize: 15, lineHeight: 21, fontWeight: '700' }}>Watch out</Text>
+          <Text style={{ color: c.warnText, fontSize: 15, lineHeight: 21 }}>{plant.warning}</Text>
+        </View>
+      ) : null}
 
       {plant.note ? (
         <View style={[styles.note, { backgroundColor: c.warnBg, borderColor: c.warnLine }]}>
@@ -78,7 +113,7 @@ export default function PlantScreen() {
       ) : (
         <Text style={{ color: c.muted }}>No source rates this plant for tortoises yet.</Text>
       )}
-      <Text style={{ color: c.muted, fontSize: 14 }}>{sourceStatus(plant)} · Not yet reviewed by a vet</Text>
+      <Text style={{ color: c.muted, fontSize: 14 }}>{sourceStatus(plant) === 'One source so far' ? 'Limited evidence: only one source so far.' : sourceStatus(plant)}</Text>
 
       <Text style={[styles.disc, { color: c.muted, borderTopColor: c.line }]}>
         General guidance, not veterinary advice. If your tortoise seems unwell or ate something
@@ -100,6 +135,7 @@ function Fact({ label, value, muted, text }: { label: string; value: string; mut
 const styles = StyleSheet.create({
   page: { padding: 16, gap: 16, paddingBottom: 48 },
   h1: { fontSize: 28, fontWeight: '700', letterSpacing: -0.5 },
+  photo: { width: 260, height: 180, borderRadius: 14 },
   verdict: { borderRadius: 16, padding: 16, gap: 6 },
   verdictTitle: { fontSize: 22, fontWeight: '700' },
   facts: { gap: 10 },

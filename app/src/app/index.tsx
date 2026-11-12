@@ -1,11 +1,12 @@
 import { Link } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Pressable, SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, Pressable, SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { ChipRow } from '@/components/chip-row';
 import { RatingPill } from '@/components/rating-pill';
 import { useTheme } from '@/constants/theme';
 import { CATEGORIES, PLANTS, type Category, type Plant } from '@/data/plants';
+import { IMAGES } from '@/data/images';
 import { FEEDABLE, plantRegion, sourceStatus, type Region } from '@/lib/ratings';
 
 type CatFilter = 'all' | Category;
@@ -26,7 +27,7 @@ const RATE_OPTIONS: { key: RateFilter; label: string }[] = [
   { key: 'free', label: 'Feed freely' },
   { key: 'mod', label: 'Moderation' },
   { key: 'spar', label: 'Sparingly' },
-  { key: 'bad', label: 'Avoid / toxic' },
+  { key: 'bad', label: 'Do not feed / toxic' },
   { key: 'nyr', label: 'Not rated' },
 ];
 
@@ -72,8 +73,8 @@ export default function SearchScreen() {
       <View style={[styles.banner, { backgroundColor: c.warnBg, borderColor: c.warnLine }]}>
         <Text style={[styles.bannerText, { color: c.warnText }]}>
           <Text style={{ fontWeight: '700' }}>Test version. </Text>
-          Ratings are drafts still being checked. Don't use this to decide what to feed until a
-          reptile vet has reviewed it.
+          Ratings are drafts compiled from published sources and may contain mistakes. When in
+          doubt, don't feed it.
         </Text>
       </View>
       <Link href="/guide" asChild>
@@ -119,6 +120,13 @@ export default function SearchScreen() {
       renderItem={({ item }) => (
         <Link href={{ pathname: '/plant/[id]', params: { id: item.id } }} asChild>
           <Pressable style={StyleSheet.flatten([styles.row, { borderBottomColor: c.line }])}>
+            {item.photos[0] && IMAGES[item.photos[0].f] ? (
+              <Image
+                source={IMAGES[item.photos[0].f]}
+                accessibilityLabel={`Photo of ${item.name}`}
+                style={[styles.thumb, { backgroundColor: c.surface }]}
+              />
+            ) : null}
             <View style={styles.rowText}>
               <Text style={[styles.name, { color: c.text }]}>{item.name}</Text>
               <Text style={[styles.sub, { color: c.muted }]} numberOfLines={1}>
@@ -136,11 +144,18 @@ export default function SearchScreen() {
         </Text>
       }
       ListFooterComponent={
-        <Link href="/about" asChild>
-          <Pressable style={styles.footer}>
-            <Text style={{ color: c.accent, fontWeight: '600' }}>About and privacy</Text>
-          </Pressable>
-        </Link>
+        <View style={styles.footer}>
+          <Link href="/sources" asChild>
+            <Pressable>
+              <Text style={{ color: c.accent, fontWeight: '600' }}>Sources and photo credits</Text>
+            </Pressable>
+          </Link>
+          <Link href="/about" asChild>
+            <Pressable>
+              <Text style={{ color: c.accent, fontWeight: '600' }}>About and privacy</Text>
+            </Pressable>
+          </Link>
+        </View>
       }
     />
   );
@@ -174,9 +189,10 @@ const styles = StyleSheet.create({
     gap: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
+  thumb: { width: 48, height: 48, borderRadius: 10 },
   rowText: { flex: 1, minWidth: 0 },
   name: { fontSize: 16, fontWeight: '600' },
   sub: { fontSize: 13 },
   empty: { padding: 24, fontSize: 15, lineHeight: 22 },
-  footer: { padding: 24, alignItems: 'center' },
+  footer: { padding: 24, alignItems: 'center', gap: 14 },
 });

@@ -17,6 +17,7 @@ export default function RootLayout() {
         <Stack.Screen name="index" options={{ title: 'Graze Guide' }} />
         <Stack.Screen name="plant/[id]" options={{ title: '' }} />
         <Stack.Screen name="guide" options={{ title: 'Feeding guide' }} />
+        <Stack.Screen name="sources" options={{ title: 'Sources' }} />
         <Stack.Screen name="about" options={{ title: 'About' }} />
       </Stack>
     </ThemeProvider>
