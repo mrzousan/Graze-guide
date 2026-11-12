@@ -55,7 +55,7 @@ const SECTIONS: { title: string; items: string[] }[] = [
   },
 ];
 
-const GUIDE_SOURCES = ['rvc24', 'rvc', 'trust', 'trustlist', 'clubweb'];
+const GUIDE_SOURCES = ['rvc2', 'rvc1', 'trust1', 'trust2', 'club1'];
 
 export default function GuideScreen() {
   const { c } = useTheme();
@@ -79,9 +79,11 @@ export default function GuideScreen() {
       ))}
       <Text style={[styles.h2, { color: c.text }]}>Sources</Text>
       {GUIDE_SOURCES.map((k) => (
-        <Pressable key={k} accessibilityRole="link" onPress={() => Linking.openURL(SOURCES[k].url)}>
-          <Text style={{ color: c.accent, fontSize: 15, paddingVertical: 2 }}>{SOURCES[k].title}</Text>
-        </Pressable>
+        SOURCES[k] ? (
+          <Pressable key={k} accessibilityRole="link" onPress={() => Linking.openURL(SOURCES[k].url)}>
+            <Text style={{ color: c.accent, fontSize: 15, paddingVertical: 2 }}>{SOURCES[k].title}</Text>
+          </Pressable>
+        ) : null
       ))}
       <Text style={{ color: c.muted, fontSize: 13 }}>
         General guidance, not veterinary advice. Ask a reptile vet about your own tortoise's needs.

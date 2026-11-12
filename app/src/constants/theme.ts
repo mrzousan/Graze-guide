@@ -3,15 +3,15 @@ import { useColorScheme } from 'react-native';
 import type { Rating } from '@/data/plants';
 
 const light = {
-  bg: '#FFFFFF',
-  surface: '#EEF2EA',
-  line: '#E1E7DC',
-  text: '#1B2620',
-  muted: '#4F5D52',
-  accent: '#2F5A2B',
+  bg: '#F3F8EC',
+  surface: '#FFFFFF',
+  line: '#D3E0C5',
+  text: '#10201A',
+  muted: '#40524A',
+  accent: '#1B7A32',
   accentText: '#FFFFFF',
-  warnBg: '#FDF6E6',
-  warnLine: '#E6CF9C',
+  warnBg: '#FFF4D6',
+  warnLine: '#EBC85C',
   warnText: '#4A3300',
 };
 
@@ -31,10 +31,10 @@ const dark: typeof light = {
 type Pair = { bg: string; fg: string; border?: string };
 
 const ratingLight: Record<Rating, Pair> = {
-  free: { bg: '#DCEBD8', fg: '#1F4D24' },
-  mod: { bg: '#E9F0CF', fg: '#3F4A0E' },
-  spar: { bg: '#FBEFD6', fg: '#6E4700' },
-  avoid: { bg: '#FBE1D3', fg: '#8A2F0A' },
+  free: { bg: '#CDEFC6', fg: '#0E4A1B' },
+  mod: { bg: '#E3EFA8', fg: '#34400A' },
+  spar: { bg: '#FFE7A8', fg: '#5E3C00' },
+  avoid: { bg: '#FFD2BC', fg: '#7E2606' },
   toxic: { bg: '#7A1414', fg: '#FFFFFF' },
   nyr: { bg: 'transparent', fg: '#3E4A41', border: '#7A877D' },
 };
@@ -50,7 +50,8 @@ const ratingDark: Record<Rating, Pair> = {
 
 export function useTheme() {
   const scheme = useColorScheme();
-  const isDark = scheme === 'dark';
+  // Light theme only for now (brighter, easier to read). Dark mode can come back later.
+  const isDark = false && scheme === 'dark';
   return {
     isDark,
     c: isDark ? dark : light,

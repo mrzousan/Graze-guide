@@ -83,8 +83,13 @@ export default function PlantScreen() {
         ) : null}
       </View>
 
-      {plant.reason && (plant.rating === 'avoid' || plant.rating === 'toxic') ? (
-        <Fact label="Why" value={plant.reason} muted={c.muted} text={c.text} />
+      {plant.rating === 'avoid' || plant.rating === 'toxic' ? (
+        <Fact
+          label="Why"
+          value={plant.reason || 'Listed as unsafe in the sources below. No further detail recorded yet.'}
+          muted={c.muted}
+          text={c.text}
+        />
       ) : null}
 
       {plant.warning ? (

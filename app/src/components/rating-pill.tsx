@@ -20,6 +20,6 @@ export function RatingPill({ rating }: { rating: Rating }) {
 }
 
 const styles = StyleSheet.create({
-  pill: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, flexShrink: 0 },
-  text: { fontSize: 13, fontWeight: '600' },
+  pill: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, flexShrink: 0 },
+  text: { fontSize: 14, fontWeight: '700' },
 });

@@ -10,10 +10,15 @@ export default function RootLayout() {
     <ThemeProvider
       value={{
         ...base,
-        colors: { ...base.colors, background: c.bg, card: c.bg, text: c.text, primary: c.accent, border: c.line },
+        colors: { ...base.colors, background: c.bg, card: isDark ? c.surface : c.accent, text: c.text, primary: c.accent, border: c.line },
       }}>
-      <StatusBar style={isDark ? 'light' : 'dark'} />
-      <Stack screenOptions={{ headerTintColor: c.accent, headerTitleStyle: { color: c.text } }}>
+      <StatusBar style="light" />
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: isDark ? c.surface : c.accent },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: { color: '#FFFFFF', fontWeight: '700' },
+        }}>
         <Stack.Screen name="index" options={{ title: 'Graze Guide' }} />
         <Stack.Screen name="plant/[id]" options={{ title: '' }} />
         <Stack.Screen name="guide" options={{ title: 'Feeding guide' }} />

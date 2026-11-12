@@ -32,9 +32,9 @@ export function ChipRow<T extends string>({
             onPress={() => onChange(o.key)}
             style={[
               styles.chip,
-              { borderColor: on ? c.text : c.line, backgroundColor: on ? c.text : c.bg },
+              { borderColor: on ? c.accent : c.line, backgroundColor: on ? c.accent : c.surface },
             ]}>
-            <Text style={[styles.text, { color: on ? c.bg : c.text, fontWeight: on ? '600' : '500' }]}>
+            <Text style={[styles.text, { color: on ? c.accentText : c.text, fontWeight: on ? '700' : '500' }]}>
               {o.label}
             </Text>
           </Pressable>
@@ -47,11 +47,11 @@ export function ChipRow<T extends string>({
 const styles = StyleSheet.create({
   row: { gap: 8, paddingRight: 16 },
   chip: {
-    minHeight: 38,
+    minHeight: 42,
     paddingHorizontal: 14,
     borderRadius: 19,
     borderWidth: 1,
     justifyContent: 'center',
   },
-  text: { fontSize: 14 },
+  text: { fontSize: 15 },
 });
