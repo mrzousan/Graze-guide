@@ -40,6 +40,17 @@
     "ios": {
       "bundleIdentifier": "io.github.mrzousan.grazeguide",
       "supportsTablet": false
-    }
+    },
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "e1695eb3-364c-41f5-b095-a53830b5d268"
+      }
+    },
+    "owner": "grazeguides-team"
   }
 }
