@@ -15,7 +15,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "io.github.mrzousan.grazeguide"
+      "package": "io.github.mrzousan.grazeguide",
+      "versionCode": 1
     },
     "web": {
       "output": "single",
